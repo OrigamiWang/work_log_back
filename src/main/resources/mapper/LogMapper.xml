@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wyx.testspringboot.dao.LogMapper">
+
+    <resultMap id="logList" type="com.wyx.testspringboot.entity.WorkLog">
+        <result property="empId" column="emp_id"/>
+        <result property="name" column="name"/>
+        <result property="modifyTime" column="modify_time"/>
+        <result property="logDay" column="log_day"/>
+        <result property="content" column="content"/>
+        <result property="workTime" column="work_time"/>
+    </resultMap>
+
+<!--  void insert(@Param("empId") String empId, @Param("name") String name, @Param("logDay") Date logDay, @Param("content") String content, @Param("workTime") Time workTime);-->
+    <insert id="insert">
+        INSERT INTO worklog(`emp_id`, `name`, `log_day`, `content`, `work_time`)
+        VALUES(#{empId}, #{name}, #{logDay}, #{content}, #{workTime})
+    </insert>
+
+<!--    void insertAccount(String empId, String email, String password);-->
+    <insert id="insertAccount">
+        INSERT INTO account(`emp_id`,`email`,`password`,`salt`)
+        VALUES(#{empId},#{email},#{password},#{salt})
+    </insert>
+
+
+    <insert id="addSalt">
+
+    </insert>
+
+
+    <!--    void updateByNo(Integer no, String empId, String name, String content, Date logDay);-->
+    <update id="updateByNo">
+        UPDATE worklog SET NAME = #{name}, emp_id = #{empId}, log_day = #{logDay}, content = #{content}, work_time = #{workTime}
+        WHERE `no` =  #{no}
+    </update>
+
+
+    <!--    List<WorkLog> fuzzySelectByEmpId();-->
+    <select id="fuzzySelectByEmpId" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM worklog
+        WHERE emp_id LIKE concat('%', #{empId}, '%')
+    </select>
+
+
+    <!--    void deleteByNo(Integer no);-->
+    <delete id="deleteByNo">
+        DELETE FROM worklog WHERE `no` = #{no}
+    </delete>
+
+
+    <!--    List<WorkLog> getLogList();-->
+    <select id="getLogList" resultMap="logList">
+        select * from worklog
+    </select>
+
+    <!--    Integer getCount();-->
+    <select id="getCount" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM worklog
+    </select>
+
+
+
+</mapper>

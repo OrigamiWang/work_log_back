@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wyx.testspringboot.dao.PriorityMapper">
+
+    <resultMap id="PermissionList" type="com.wyx.testspringboot.entity.Permission">
+        <result property="empId" column="emp_id"/>
+        <result property="priority" column="priority"/>
+    </resultMap>
+
+
+    <!--    void insertPermission(String empId, String permission);-->
+    <insert id="insertPermission">
+        INSERT INTO permission(`emp_id`, `priority`)
+        VALUES (#{empId}, #{permission})
+    </insert>
+
+<!--    void updatePriorityByEmpId(String priority, String empId);-->
+    <update id="updatePriorityByEmpId">
+        UPDATE permission SET priority = #{priority}
+        WHERE emp_id = #{empId}
+    </update>
+
+    <!--    Integer fuzzyGetCountByEmpId();-->
+    <select id="fuzzyGetCountByEmpId" resultType="java.lang.Integer">
+        SELECT COUNT(*) FROM permission WHERE emp_id LIKE CONCAT('%', #{empId},'%')
+    </select>
+
+
+    <!--    List<Permission>  getList();-->
+    <select id="getList" resultMap="PermissionList">
+        SELECT *
+        FROM permission
+    </select>
+
+    <!--    Integer getPermissionCount();-->
+    <select id="getPermissionCount" resultType="java.lang.Integer">
+        SELECT COUNT(*)
+        FROM permission
+    </select>
+
+<!--    String getPriorityByEmpId(String empId);-->
+    <select id="getPriorityByEmpId" resultType="java.lang.String">
+        SELECT priority FROM permission WHERE emp_id = #{empId}
+    </select>
+
+<!--    String getPriorityByEmail(String email);-->
+    <select id="getPriorityByEmail" resultType="java.lang.String">
+        SELECT priority FROM permission p
+                                 INNER JOIN account a
+                                            ON p.emp_id = a.emp_id
+        WHERE a.email = #{email}
+    </select>
+</mapper>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.wyx.testspringboot.dao.LoginMapper">
+
+    <resultMap id="loginList" type="com.wyx.testspringboot.entity.Account">
+        <result property="empId" column="emp_id"/>
+        <result property="email" column="email"/>
+        <result property="password" column="password"/>
+        <result property="registerTime" column="register_time"/>
+        <result property="loginTime" column="login_time"/>
+    </resultMap>
+
+    <!--    void updatePassword(String password, String email);-->
+    <update id="updatePassword">
+        UPDATE account SET PASSWORD = #{password}
+        WHERE email = #{email}
+    </update>
+
+    <!--    void selectAccountByEmpId(@Param("empId") String empId, @Param("password") String password);-->
+    <select id="selectAccountByEmpId" resultMap="loginList">
+        SELECT * FROM account WHERE emp_id = #{empId}
+    </select>
+
+<!--    Account selectAccountByEmail(String email, String password);-->
+    <select id="selectAccountByEmail" resultMap="loginList">
+        SELECT * FROM account WHERE email = #{email}
+    </select>
+
+<!--    List<String> getEmailList();-->
+    <select id="getEmailList" resultType="String">
+        SELECT email FROM account
+    </select>
+
+<!--    List<String> getEmpIdList();-->
+    <select id="getEmpIdList" resultType="String">
+        select emp_id from account
+    </select>
+    <!--    String getEmailByEmpId(String empId);-->
+    <select id="getEmailByEmpId" resultType="java.lang.String">
+
+        SELECT email FROM account WHERE emp_id = #{empId}
+    </select>
+
+</mapper>
